@@ -1,0 +1,8 @@
+{
+    "files.exclude": {
+        "**/__pycache__": true,
+        ".idea": true,
+        ".venv": true,
+        ".vscode": true
+    }
+}
