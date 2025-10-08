@@ -1,14 +1,11 @@
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 import torch
-from transformers import AutoTokenizer, AutoModel
-
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class AbstractDataset(Dataset):
-    def __init__(self, texts, targets, max_length=128):
+    def __init__(self, texts, targets, tokenizer, max_length=128):
         self.texts = texts.tolist()
         self.targets = torch.tensor(targets.values, dtype=torch.float32).view(-1, 1)
-        self.tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+        self.tokenizer = tokenizer
         self.max_length = max_length
 
     def __len__(self):
@@ -17,8 +14,6 @@ class AbstractDataset(Dataset):
     def __getitem__(self, idx):
         text = self.texts[idx]
         target = self.targets[idx]
-        if not isinstance(text, str):
-            print(f"Invalid text at index {idx}: {text} ({type(text)})")
         encoding = self.tokenizer(
             text,
             truncation=True,
