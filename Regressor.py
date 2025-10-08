@@ -17,9 +17,9 @@ class TextRegressor(nn.Module):
         return x
 
 
-def train(model, train_loader, bert_model, device, epochs = 10):
+def train(model, train_loader, bert_model, device, epochs, lr):
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr)
     for epoch in range(epochs):
         model.train()
         total_loss = 0

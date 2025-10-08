@@ -17,6 +17,8 @@ class AbstractDataset(Dataset):
     def __getitem__(self, idx):
         text = self.texts[idx]
         target = self.targets[idx]
+        if not isinstance(text, str):
+            print(f"Invalid text at index {idx}: {text} ({type(text)})")
         encoding = self.tokenizer(
             text,
             truncation=True,

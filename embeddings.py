@@ -1,22 +1,17 @@
 import torch
 from transformers import AutoTokenizer, AutoModel
 
-tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def get_bert_model():
+def get_bert_model(device):
     bert_model = AutoModel.from_pretrained("distilbert-base-uncased")
-    # Freeze BERT parameters for faster training
     for param in bert_model.parameters():
         param.requires_grad = False
     bert_model.to(device)
     return bert_model
 
 
-# -------------------------------
-# 3. Function to get BERT embeddings
-# -------------------------------
-def get_bert_embeddings(texts, model, max_length=128):
+def get_bert_embeddings(texts, model, device, max_length=128):
+    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
     inputs = tokenizer(
         texts.tolist(),
         return_tensors="pt",
