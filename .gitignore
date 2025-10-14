@@ -22,3 +22,5 @@ dist/
 # OS-specific files
 .DS_Store
 Thumbs.db
+/data/raw/2007 Derma Cecilia.rar
+/data/raw/2007 Derma Cecilia/
