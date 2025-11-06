@@ -7,7 +7,7 @@ class Config:
 
     TEXT_COL = "Body"
     LABEL_COL = "Scores"
-    MODEL_TYPE = "lstm"   # opciones: 'rnn', 'lstm', 'gru'
+    MODEL_TYPE = "rnn"   # opciones: 'rnn', 'lstm', 'gru'
 
     SEED = 42
     MAX_LEN = 128
@@ -20,6 +20,13 @@ class Config:
     LR = 1e-3
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     MIN_FREQ = 1
-    NUM_CLASSES = 5  # o el número real según tus labels
+    NUM_CLASSES = 5
     PAD_IDX = 0
-    NUM_EPOCHS = EPOCHS  # alias para compatibilidad con trainer.py
+    NUM_EPOCHS = EPOCHS
+
+    # === LoRA ===
+    USE_LORA = True
+    LORA_R = 16
+    LORA_ALPHA = 32
+    LORA_DROPOUT = 0.07
+    LORA_TARGET_MODULES = ["weight_hh_l0", "weight_ih_l0"]  # capas recurrentes

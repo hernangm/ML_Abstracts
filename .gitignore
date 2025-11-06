@@ -26,3 +26,15 @@ Thumbs.db
 /.vscode/
 
 /codeOutTest/b
+/data/processed/results/
+.gitignore
+
+
+data/raw/__init__.py
+dataset_loader/__init__.py
+models/__init__.py
+pipeline/__init__.py
+text_preprocessor/__init__.py
+train/__init__.py
+utils/__init__.py
+data/processed/__init__.py

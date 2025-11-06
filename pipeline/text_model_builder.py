@@ -1,13 +1,16 @@
 from text_preprocessor.tokenizer import build_vocab, text_to_tensor
 import torch
 
+from utils.lora_utils import apply_lora
+
+
 def prepare_text_model(df_train, df_test, cfg):
-    print("🔠 Construyendo vocabulario y tokenizando...")
+    print("Construyendo vocabulario y tokenizando...")
     vocab, stoi = build_vocab(df_train[cfg.TEXT_COL], min_freq=cfg.MIN_FREQ)
     X_train, y_train = text_to_tensor(df_train, stoi, cfg.MAX_LEN, label_col="label")
     X_test, y_test = text_to_tensor(df_test, stoi, cfg.MAX_LEN, label_col="label")
 
-    print(f"🧠 Inicializando modelo ({cfg.MODEL_TYPE})...")
+    print(f" Inicializando modelo ({cfg.MODEL_TYPE})...")
 
     if cfg.MODEL_TYPE == "rnn":
         from models.rnn_classifier import RNNClassifier as Model
@@ -27,5 +30,11 @@ def prepare_text_model(df_train, df_test, cfg):
         num_layers=cfg.NUM_LAYERS,
         pad_idx=cfg.PAD_IDX
     ).to(cfg.DEVICE)
+
+    # === Aplicar LoRA si está activado ===
+    if getattr(cfg, "USE_LORA", False):
+        from utils.lora_utils import apply_lora
+        print("🔧 Aplicando LoRA...")
+        model = apply_lora(model, cfg)
 
     return model, vocab, stoi, X_train, y_train, X_test, y_test

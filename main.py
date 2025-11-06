@@ -1,8 +1,15 @@
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from dataset_loader.loader import load_dataset
 from pipeline.text_model_builder import prepare_text_model
 from train.trainer import train_model
 from train.evaluator import evaluate_model
 from utils.config import Config
+
+
+
+
 
 if __name__ == "__main__":
     cfg = Config()

@@ -16,3 +16,4 @@ def load_dataset(path, text_col="Body", label_col="Scores", seed=42, test_size=0
         df, test_size=test_size, random_state=seed, stratify=df["label"]
     )
     return train_df.reset_index(drop=True), test_df.reset_index(drop=True), len(unique_classes)
+
