@@ -26,8 +26,8 @@ LORA_BIAS = "none"             # no se modifican los bias del modelo base
 # ⚙️ Parámetros de entrenamiento
 # -----------------------------
 LEARNING_RATE = 5e-5           # tasa de aprendizaje → tamaño del paso en descenso de gradiente
-BATCH_SIZE = 8                 # cantidad de ejemplos por batch (impacta en estabilidad y memoria)
-GRAD_ACCUM_STEPS = 2           # pasos para acumular gradientes antes de actualizar
+BATCH_SIZE = 4                 # cantidad de ejemplos por batch (impacta en estabilidad y memoria)
+GRAD_ACCUM_STEPS = 4           # pasos para acumular gradientes antes de actualizar
 NUM_EPOCHS = 2                 # número de pasadas completas sobre el dataset
 WEIGHT_DECAY = 0.01            # penalización de pesos grandes → regularización L2
 LR_SCHEDULER = "linear"        # plan de ajuste del learning rate a lo largo del entrenamiento
@@ -36,7 +36,7 @@ LABEL_SMOOTH = 0.1             # suavizado de etiquetas → evita sobreconfianza
 LOGGING_STEPS = 20             # frecuencia de registro de métricas
 FP16 = torch.cuda.is_available()  # habilita precisión mixta en GPU (optimiza rendimiento)
 EVAL_STRATEGY = "epoch"        # evalúa al final de cada época
-OUTPUT_DIR = "./results"       # carpeta de salida
+OUTPUT_DIR = "../data/processed/results"  # carpeta de salida
 
 
 # ============================================================
@@ -61,8 +61,8 @@ def load_dataset(path, text_col="Body", label_col="Scores", seed=42, test_size=0
 # ============================================================
 # 2. Rutas y carga de datos
 # ============================================================
-CURRENT_DIR = Path(__file__).resolve().parent
-DATA_PATH = CURRENT_DIR / "Abstracts.xlsx"
+CURRENT_DIR = "../data/processed"
+DATA_PATH = CURRENT_DIR + "/Abstracts.xlsx"
 
 train_df, test_df, num_labels = load_dataset(path=str(DATA_PATH), text_col="Body", label_col="Scores")
 
