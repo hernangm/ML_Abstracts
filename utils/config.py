@@ -7,7 +7,7 @@ class Config:
 
     TEXT_COL = "Body"
     LABEL_COL = "Scores"
-    MODEL_TYPE = "rnn"   # opciones: 'rnn', 'lstm', 'gru'
+    MODEL_TYPE = "gru"   # opciones: 'rnn', 'lstm', 'gru'
 
     SEED = 42
     MAX_LEN = 128

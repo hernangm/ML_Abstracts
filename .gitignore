@@ -38,3 +38,5 @@ text_preprocessor/__init__.py
 train/__init__.py
 utils/__init__.py
 data/processed/__init__.py
+/fileSearch.py
+/resultado.txt
