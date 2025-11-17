@@ -6,7 +6,7 @@ class RNNNumPy:
         self.hidden_size = hidden_size
         self.seq_len = seq_len
 
-        # Parámetros del modelo (idénticos al udesa_ml2_rnn.py)
+        # Parámetros del modelo
         self.Wxh = np.random.randn(hidden_size, vocab_size) * 0.01
         self.Whh = np.random.randn(hidden_size, hidden_size) * 0.01
         self.Why = np.random.randn(vocab_size, hidden_size) * 0.01

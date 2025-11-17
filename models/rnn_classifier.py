@@ -36,7 +36,7 @@ class RNNClassifier(nn.Module):
     def forward(self, x, lengths):
         """
         x: Tensor [batch, seq_len] con índices de vocabulario
-        lengths: longitudes reales (sin PAD) de cada secuencia [batch]
+        lengths: longitudes reales (sin PAD) de cada secuencia
         """
 
         # [batch, seq_len, embed_dim]

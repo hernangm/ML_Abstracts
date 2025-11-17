@@ -25,7 +25,7 @@ def sample(model, seed_vec, n=100):
 
 def entrenar_rnn(model, data, targets, lr=0.001):
     """
-    Entrenamiento simple para RNN basado en udesa_ml2_rnn.py
+    Entrenamiento simple para RNN - TEST
     """
     for i in range(len(data)):
         inputs = data[i]
@@ -34,9 +34,7 @@ def entrenar_rnn(model, data, targets, lr=0.001):
         outputs, last_h = model.forward(inputs)
         loss = model.loss(outputs, targs)
 
-        # Aquí podrías agregar el backward del archivo original
-        # si querés mantener exacta la implementación
-        # backprop_rnn(model, outputs, inputs, targs, lr)
+
 
     return model
 
