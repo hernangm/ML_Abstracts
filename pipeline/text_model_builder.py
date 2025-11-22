@@ -1,8 +1,4 @@
 from text_preprocessor.tokenizer import build_vocab, text_to_tensor
-import torch
-
-from utils.lora_utils import apply_lora
-
 
 def prepare_text_model(df_train, df_test, cfg):
     print("Construyendo vocabulario y tokenizando...")
@@ -18,6 +14,14 @@ def prepare_text_model(df_train, df_test, cfg):
         from models.lstm_classifier import LSTMClassifier as Model
     elif cfg.MODEL_TYPE == "gru":
         from models.gru_classifier import GRUClassifier as Model
+    elif cfg.MODEL_TYPE == "rnn_scheduler":
+        from pipeline.text_model_builder_rnn_scheduler import prepare_rnn_scheduler
+        model, vocab, stoi, X_train, y_train, X_test, y_test, scheduler = \
+            prepare_rnn_scheduler(df_train, df_test, cfg)
+        return model, vocab, stoi, X_train, y_train, X_test, y_test, scheduler
+    elif cfg.MODEL_TYPE == "rnn_phrases":
+        from pipeline.text_model_builder_phrases import prepare_rnn_phrases
+        return prepare_rnn_phrases(df_train, df_test, cfg)
     else:
         raise ValueError(f"Modelo no soportado: {cfg.MODEL_TYPE}")
 
