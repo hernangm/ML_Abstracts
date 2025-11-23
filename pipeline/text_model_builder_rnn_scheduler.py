@@ -65,7 +65,7 @@ def prepare_rnn_scheduler(df_train, df_test, cfg):
     X_train, y_train = text_to_tensor_phrases(df_train, stoi, cfg.MAX_LEN)
     X_test,  y_test  = text_to_tensor_phrases(df_test,  stoi, cfg.MAX_LEN)
 
-    print("🧠 Inicializando modelo RNN con ReduceLROnPlateau...")
+    print("Inicializando modelo RNN con ReduceLROnPlateau...")
     model = RNNClassifier(
         vocab_size=len(vocab),
         embed_dim=cfg.EMBED_DIM,
