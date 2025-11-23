@@ -16,7 +16,7 @@ class Config:
 
     # Tipo de modelo
     # Opciones: 'rnn', 'lstm', 'gru', 'rnn_scheduler', 'rnn_phrases'
-    MODEL_TYPE = "rnn"
+    MODEL_TYPE = "rnn_phrases"
 
     # Semilla
     SEED = 42
@@ -28,7 +28,7 @@ class Config:
     BATCH_SIZE = 32
 
     # Numero total de épocas
-    EPOCHS = 1
+    EPOCHS = 10
 
     # Dimensión del embedding
     EMBED_DIM = 128

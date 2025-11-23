@@ -12,10 +12,38 @@ from train.evaluator import evaluate_model
 from utils.config import Config
 
 
-def main():
-    cfg = Config()
+def seleccionar_modelo():
+    opciones = {
+        "1": "rnn",
+        "2": "lstm",
+        "3": "gru",
+        "4": "rnn_scheduler",
+        "5": "rnn_phrases",
+        "0": "salir"
+    }
 
-    print("Cargando dataset...")
+    while True:
+        print("\nSeleccione el modelo a entrenar:")
+        print("1) rnn")
+        print("2) lstm")
+        print("3) gru")
+        print("4) rnn_scheduler")
+        print("5) rnn_phrases")
+        print("0) salir\n")
+
+        opcion = input("Opción: ").strip()
+
+        if opcion in opciones:
+            return opciones[opcion]
+
+        print("Opción inválida. Intente nuevamente.")
+
+
+def ejecutar_entrenamiento(model_type):
+    cfg = Config()
+    cfg.MODEL_TYPE = model_type
+
+    print("\nCargando dataset...")
     df_train, df_test, num_classes = load_dataset(
         cfg.DATA_PATH,
         text_col=cfg.TEXT_COL,
@@ -23,12 +51,8 @@ def main():
     )
     cfg.NUM_CLASSES = num_classes
 
-    print(f"\n Preparando modelo PyTorch ({cfg.MODEL_TYPE.upper()})...")
+    print(f"\nPreparando modelo ({cfg.MODEL_TYPE})...")
 
-    # ===========================================================
-    #   Modelos especiales con comportamiento distinto:
-    #   rnn_scheduler  → usa ReduceLROnPlateau
-    # ===========================================================
     if cfg.MODEL_TYPE == "rnn_scheduler":
         (
             model,
@@ -41,12 +65,9 @@ def main():
             scheduler,
         ) = prepare_text_model(df_train, df_test, cfg)
 
-        print("Entrenando modelo con Scheduler (ReduceLROnPlateau)...")
+        print("Entrenando modelo con ReduceLROnPlateau...")
         train_model(model, X_train, y_train, cfg, scheduler=scheduler)
 
-    # ===========================================================
-    #   Modelos normales: rnn, lstm, gru, rnn_phrases
-    # ===========================================================
     else:
         (
             model,
@@ -61,11 +82,22 @@ def main():
         print("Entrenando modelo...")
         train_model(model, X_train, y_train, cfg)
 
-    # ===========================================================
-    #   Evaluación final
-    # ===========================================================
     print("\nEvaluando modelo final...")
     evaluate_model(model, X_test, y_test, cfg)
+
+
+def main():
+
+    while True:
+        modelo = seleccionar_modelo()
+
+        if modelo == "salir":
+            print("Finalizando ejecución.")
+            break
+
+        print(f"\nModelo seleccionado: {modelo}")
+        ejecutar_entrenamiento(modelo)
+        print("\nEntrenamiento finalizado. Volviendo al menú...\n")
 
 
 if __name__ == "__main__":

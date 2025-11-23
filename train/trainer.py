@@ -4,22 +4,23 @@ from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 
 
-"""
-    Trains a PyTorch model for text classification.
+
+    """
+    Entrena un modelo PyTorch para clasificación de texto.
 
     Parameters
     ----------
     model : torch.nn.Module
         recurrent model (RNN, LSTM, GRU)
     X_train : Tensor
-        [N, T] Tensor with vocab indexes
+        Tensor [N, T] con índices del vocabulario
     y_train : Tensor
-        [N] Tensor with integer labels
+        Tensor [N] con labels enteros
     cfg : Config
         Project config (lr, batch, etc.)
     scheduler : ReduceLROnPlateau | None
-"""
-
+        Scheduler opcional
+    """
 
 def train_model(
     model: torch.nn.Module,
@@ -32,9 +33,7 @@ def train_model(
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.LR)
 
-   
     pad_id = cfg.PAD_IDX
-
     mask: Tensor = (X_train != pad_id)
     lengths: Tensor = mask.sum(dim=1).to(torch.long)
 

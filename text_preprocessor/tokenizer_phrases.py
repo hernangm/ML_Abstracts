@@ -5,10 +5,8 @@ from gensim.models.phrases import Phrases
 
 _word_re = re.compile(r"\b\w+\b", re.UNICODE)
 
-
 def tokenize(text):
     return _word_re.findall(text.lower())
-
 
 """
     Build a vocabulary with bigram phrase detection from a corpus of text.
@@ -33,6 +31,7 @@ def tokenize(text):
         A mapping from token to integer index. Indices align with
         positions in ``vocab``.
 """
+
 def build_vocab_phrases(corpus, min_freq=5):
     sentences = [tokenize(t) for t in corpus]
 
@@ -83,6 +82,7 @@ def build_vocab_phrases(corpus, min_freq=5):
     y : torch.Tensor of shape (N,)
         Tensor containing integer labels.
 """
+
 def text_to_tensor_phrases(df, stoi, max_len, text_col="Body", label_col="label"):
     pad_idx = stoi.get("<pad>", 0)
     unk_idx = stoi.get("<unk>", 1)

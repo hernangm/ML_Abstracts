@@ -4,7 +4,6 @@ from collections import Counter
 
 _word_re = re.compile(r"\b\w+\b", re.UNICODE)
 
-
 def tokenize(text):
     return _word_re.findall(text.lower())
 
@@ -34,7 +33,6 @@ def tokenize(text):
         Dictionary mapping each token to its integer index within `vocab`.
 """
 
-
 def build_vocab(corpus, min_freq=5):
     counter = Counter()
     for text in corpus:
@@ -43,39 +41,6 @@ def build_vocab(corpus, min_freq=5):
     vocab = specials + [tok for tok, c in counter.items() if c >= min_freq]
     stoi = {tok: i for i, tok in enumerate(vocab)}
     return vocab, stoi
-
-
-"""
-    Convert text and labels from a DataFrame into padded PyTorch tensors.
-
-    This function tokenizes each text entry, maps tokens to integer IDs
-    using the provided `stoi` vocabulary, truncates sequences longer than
-    `max_len`, pads shorter sequences with the `<pad>` index, and returns
-    tensors suitable for training PyTorch models.
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        DataFrame containing the text and label columns.
-    stoi : dict
-        Mapping from token string to integer index, typically produced by
-        `build_vocab`.
-    max_len : int
-        Maximum sequence length. Sequences longer than this are truncated,
-        and shorter sequences are padded.
-    text_col : str, optional (default="Body")
-        Name of the column in `df` containing raw text strings.
-    label_col : str, optional (default="label")
-        Name of the column containing numeric labels.
-
-    Returns
-    -------
-    X : torch.Tensor of shape (N, max_len)
-        Tensor containing padded token ID sequences for all samples.
-    y : torch.Tensor of shape (N,)
-        Tensor containing label IDs.
-"""
-
 
 def text_to_tensor(df, stoi, max_len, text_col="Body", label_col="label"):
     pad_idx = stoi.get("<pad>", 0)

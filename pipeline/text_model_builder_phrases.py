@@ -1,7 +1,5 @@
 from text_preprocessor.tokenizer_phrases import build_vocab_phrases, text_to_tensor_phrases
 from models.rnn_classifier import RNNClassifier
-
-
 """
     Prepare data and model components for an RNN classifier using phrase-aware tokenization.
 

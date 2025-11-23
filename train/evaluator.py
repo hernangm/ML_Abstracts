@@ -23,7 +23,6 @@ from sklearn.metrics import accuracy_score
         Configuration object with attributes described in @link utils/config.py
 """
 
-
 def evaluate_model(model, X_test, y_test, cfg):
     model.eval()
     y_pred, y_true = [], []
@@ -37,4 +36,4 @@ def evaluate_model(model, X_test, y_test, cfg):
             y_pred.append(pred)
             y_true.append(y_test[i].item())
     acc = accuracy_score(y_true, y_pred)
-    print(f"✅ Accuracy: {acc*100:.2f}%")
+    print(f"Accuracy: {acc*100:.2f}%")
