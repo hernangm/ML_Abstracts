@@ -4,6 +4,23 @@ from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 
 
+"""
+    Trains a PyTorch model for text classification.
+
+    Parameters
+    ----------
+    model : torch.nn.Module
+        recurrent model (RNN, LSTM, GRU)
+    X_train : Tensor
+        [N, T] Tensor with vocab indexes
+    y_train : Tensor
+        [N] Tensor with integer labels
+    cfg : Config
+        Project config (lr, batch, etc.)
+    scheduler : ReduceLROnPlateau | None
+"""
+
+
 def train_model(
     model: torch.nn.Module,
     X_train: Tensor,
@@ -11,29 +28,13 @@ def train_model(
     cfg,
     scheduler=None
 ):
-    """
-    Entrena un modelo PyTorch para clasificación de texto.
-
-    Parameters
-    ----------
-    model : torch.nn.Module
-        Modelo recurrente (RNN, LSTM, GRU)
-    X_train : Tensor
-        Tensor [N, T] con índices del vocabulario
-    y_train : Tensor
-        Tensor [N] con labels enteros
-    cfg : Config
-        Configuración del proyecto (lr, batch, etc.)
-    scheduler : ReduceLROnPlateau | None
-        Scheduler opcional
-    """
 
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.LR)
 
-    # === Calcular longitudes reales (no pads) ===
+   
     pad_id = cfg.PAD_IDX
-    # PyCharm/IntelliJ ahora sabe que esto es un Tensor
+
     mask: Tensor = (X_train != pad_id)
     lengths: Tensor = mask.sum(dim=1).to(torch.long)
 

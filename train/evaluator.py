@@ -1,6 +1,29 @@
 import torch
 from sklearn.metrics import accuracy_score
 
+
+"""
+    Evaluate a sequence classification model on a test dataset.
+
+    This function runs the model in evaluation mode, performs token-level
+    masking to compute sequence lengths, generates predictions for each
+    test sample, and computes overall classification accuracy.
+
+    Supported model types include: 'rnn', 'lstm', 'gru', 'rnn_scheduler', and 'rnn_phrases'.
+
+    Parameters
+    ----------
+    model : torch.nn.Module
+        Trained sequence classification model.
+    X_test : torch.Tensor
+        Tensor containing padded token ID sequences of shape (N, T).
+    y_test : torch.Tensor
+        Tensor containing integer labels of shape (N,).
+    cfg : object
+        Configuration object with attributes described in @link utils/config.py
+"""
+
+
 def evaluate_model(model, X_test, y_test, cfg):
     model.eval()
     y_pred, y_true = [], []
