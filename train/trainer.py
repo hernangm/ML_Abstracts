@@ -4,23 +4,23 @@ from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 
 
+"""
+Entrena un modelo PyTorch para clasificación de texto.
 
-    """
-    Entrena un modelo PyTorch para clasificación de texto.
+Parameters
+----------
+model : torch.nn.Module
+    Modelo recurrente (RNN, LSTM, GRU).
+X_train : Tensor
+    Tensor [N, T] con índices del vocabulario.
+y_train : Tensor
+    Tensor [N] con labels enteros.
+cfg : Config
+    Configuración del proyecto (lr, batch, etc.).
+scheduler : ReduceLROnPlateau | None
+    Scheduler opcional.
+"""
 
-    Parameters
-    ----------
-    model : torch.nn.Module
-        recurrent model (RNN, LSTM, GRU)
-    X_train : Tensor
-        Tensor [N, T] con índices del vocabulario
-    y_train : Tensor
-        Tensor [N] con labels enteros
-    cfg : Config
-        Project config (lr, batch, etc.)
-    scheduler : ReduceLROnPlateau | None
-        Scheduler opcional
-    """
 
 def train_model(
     model: torch.nn.Module,
@@ -29,7 +29,6 @@ def train_model(
     cfg,
     scheduler=None
 ):
-
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.LR)
 
@@ -44,7 +43,7 @@ def train_model(
         model.train()
         total_loss = 0.0
 
-        loop = tqdm(loader, desc=f"Epoch {epoch+1}/{cfg.NUM_EPOCHS}")
+        loop = tqdm(loader, desc=f"Epoch {epoch + 1}/{cfg.NUM_EPOCHS}")
 
         for X, seq_lengths, y in loop:
             X = X.to(cfg.DEVICE)
@@ -63,7 +62,7 @@ def train_model(
             loop.set_postfix(loss=loss.item())
 
         avg_loss = total_loss / len(loader)
-        print(f"Epoch {epoch+1}: Loss promedio {avg_loss:.4f}")
+        print(f"Epoch {epoch + 1}: Loss promedio {avg_loss:.4f}")
 
         # === Scheduler opcional ===
         if scheduler is not None:
