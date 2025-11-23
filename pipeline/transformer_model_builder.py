@@ -47,7 +47,7 @@ def prepare_transformer_model(df_train, df_test, cfg):
     X_train, y_train = text_to_tensor(df_train, stoi, cfg.MAX_LEN, text_col=cfg.TEXT_COL, label_col="label")
     X_test, y_test = text_to_tensor(df_test, stoi, cfg.MAX_LEN, text_col=cfg.TEXT_COL, label_col="label")
 
-    print("🧠 Initializing BERT model for sequence classification...")
+    print("Initializing BERT model for sequence classification...")
     model = BertForSequenceClassification.from_pretrained(
         "bert-base-uncased",
         num_labels=cfg.NUM_CLASSES
