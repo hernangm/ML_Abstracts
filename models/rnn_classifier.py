@@ -27,7 +27,7 @@ class RNNClassifier(nn.Module):
         # Dropout en embeddings y capa final
         self.dropout = nn.Dropout(dropout)
 
-        # Inicialización similar a la de tus otros modelos
+        # Inicialización
         nn.init.xavier_uniform_(self.embedding.weight)
         if pad_idx is not None:
             with torch.no_grad():
