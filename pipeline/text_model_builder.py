@@ -35,7 +35,7 @@ def prepare_text_model(df_train, df_test, cfg):
         pad_idx=cfg.PAD_IDX
     ).to(cfg.DEVICE)
 
-    # === Aplicar LoRA si está activado ===
+    # Aplicar LoRA si está activado
     if getattr(cfg, "USE_LORA", False):
         from utils.lora_utils import apply_lora
         print("🔧 Aplicando LoRA...")
