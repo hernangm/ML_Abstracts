@@ -29,7 +29,7 @@ def apply_lora(model, cfg):
     """
     Aplica LoRA sobre la capa final del modelo recurrente.
     """
-    print("🔧 Aplicando LoRA manual a la capa final (con soporte CUDA)...")
+    print("Aplicando LoRA manual a la capa final (con soporte CUDA)...")
     device = cfg.DEVICE
     model.fc = LoRALinear(
         model.fc,
