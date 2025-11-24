@@ -60,8 +60,7 @@ class Config:
     # EPOCHS
     NUM_EPOCHS = EPOCHS
 
-    # ===== LoRA (Low-Rank Adaptation) =====
-    #  LoRA
+    # LoRA (Low-Rank Adaptation)
     USE_LORA = False
 
     # factorización de LoRA
