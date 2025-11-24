@@ -29,6 +29,7 @@ def train_model(
     cfg,
     scheduler=None
 ):
+    import time
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.LR)
 
@@ -39,6 +40,7 @@ def train_model(
     dataset = TensorDataset(X_train, mask, lengths, y_train)
     loader = DataLoader(dataset, batch_size=cfg.BATCH_SIZE, shuffle=True)
 
+    start_time = time.time()
     for epoch in range(cfg.NUM_EPOCHS):
         model.train()
         total_loss = 0.0
@@ -73,3 +75,8 @@ def train_model(
             scheduler.step(avg_loss)
             current_lr = optimizer.param_groups[0]["lr"]
             print(f"  → Scheduler: LR actualizado a {current_lr:.8f}")
+
+    end_time = time.time()
+    train_time = end_time - start_time
+    cfg.TRAIN_TIME = train_time
+    print(f"Tiempo de entrenamiento: {train_time:.2f} segundos")

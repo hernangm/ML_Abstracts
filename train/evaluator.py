@@ -55,14 +55,28 @@ def evaluate_model(model, X_test, y_test, cfg):
     f1 = f1_score(y_true, y_pred, average="macro")
     print(f"F1 score (macro): {f1:.4f}")
 
-    # Guardar resumen en archivo aparte
+    # Guardar resumen en archivo aparte, incluyendo tiempo y arquitectura
+    import platform, time
     os.makedirs("results", exist_ok=True)
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     summary_filename = f"results/{cfg.MODEL_TYPE}_{now}_summary.csv"
+
+    # Medir tiempo de entrenamiento (si está en cfg, usarlo; si no, usar None)
+    train_time = getattr(cfg, "TRAIN_TIME", None)
+
+    # Obtener información de arquitectura
+    arch = platform.platform()
+    processor = platform.processor()
+    device_type = str(cfg.DEVICE)
+
     summary_df = pd.DataFrame({
         "accuracy": [acc],
         "avg_abs_diff": [avg_abs_diff],
-        "f1_score_macro": [f1]
+        "f1_score_macro": [f1],
+        "train_time_sec": [train_time],
+        "architecture": [arch],
+        "processor": [processor],
+        "device": [device_type]
     })
     summary_df.to_csv(summary_filename, index=False)
     print(f"Resumen guardado en: {summary_filename}")
