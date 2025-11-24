@@ -1,20 +1,35 @@
-# pipeline/bert_lora_builder.py
-
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from peft import LoraConfig, get_peft_model
 
 def prepare_bert_lora_model(df_train, df_test, cfg):
     """
-    Prepara datos, tokenizador, y el modelo BERT+LoRA sin tocar
-    las arquitecturas existentes del proyecto.
-    """
+    Prepares tokenizer, encoded inputs, BERT model augmented LoRA.
 
+    Parameters
+    df_train : DataFrame
+        Training samples.
+    df_test : DataFrame
+        Test samples.
+    cfg : Config
+        Configuration object.
+
+    Key arguments
+    model_name : pretrained checkpoint.
+    max_length : sequence cap.
+    batch_size : training size.
+    num_labels : output classes.
+    r : LoRA rank.
+    lora_alpha : scaling factor.
+    lora_dropout : LoRA dropout.
+    device : compute target.
+
+    """
     model_name = "bert-base-multilingual-cased"
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    # ---- encode texts ----
+    # encode texts
     def encode_texts(series):
         enc = tokenizer(
             list(series),
@@ -31,13 +46,13 @@ def prepare_bert_lora_model(df_train, df_test, cfg):
     y_train = torch.tensor(df_train["label"].values, dtype=torch.long)
     y_test = torch.tensor(df_test["label"].values, dtype=torch.long)
 
-    # ---- cargar modelo base ----
+    # ---- load base model ----
     model = AutoModelForSequenceClassification.from_pretrained(
         model_name,
         num_labels=cfg.NUM_CLASSES
     )
 
-    # ---- aplicar LoRA ----
+    # ---- LoRA ----
     lora_cfg = LoraConfig(
         r=cfg.LORA_R,
         lora_alpha=cfg.LORA_ALPHA,

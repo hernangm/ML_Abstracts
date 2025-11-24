@@ -2,6 +2,13 @@ import torch
 import os
 
 class Config:
+    """
+    Central configuration object for all text-classification models
+    (RNN, LSTM, GRU, scheduler variants, phrase variants, and optional LoRA).
+    Purpose
+    Defines all hyperparameters, dataset paths, and model settings
+    required across the full training/evaluation pipeline.
+    """
     # Directorio base
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

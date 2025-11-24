@@ -48,12 +48,33 @@ def evaluate_model(model, X_test, y_test, cfg):
     for c in range(cfg.NUM_CLASSES):
         print(f"Clase {c}:  Precision={precision[c]:.3f}  Recall={recall[c]:.3f}  F1={f1[c]:.3f}")
 
-    # === Gráfico (NUEVO - no altera nada existente) ===
+
     plot_detailed_metrics(precision, recall, f1, cfg.NUM_CLASSES)
 
 def compute_detailed_metrics(y_true, y_pred, num_classes):
     """
-    Calcula precision, recall y F1 por clase sin alterar el flujo normal.
+    Computes per-class precision
+    recall
+    F1 for a multiclass classifier.
+
+    Parameters
+    y_true : array-like
+        Ground-truth labels.
+    y_pred : array-like
+        Predicted labels.
+    num_classes : int
+        Total class count.
+
+    Key arguments
+    precision : class-wise accuracy.
+    recall : class-wise sensitivity.
+    f1 : harmonic mean.
+    labels : class indices.
+    zero_division : safe fallback.
+
+    Returns
+    tuple
+        precision, recall, f1
     """
     precision, recall, f1, _ = precision_recall_fscore_support(
         y_true,
@@ -67,9 +88,26 @@ def compute_detailed_metrics(y_true, y_pred, num_classes):
 
 def plot_detailed_metrics(precision, recall, f1, num_classes):
     """
-    Grafica barras por clase para Precision, Recall y F1 (0..1).
-    El estilo replica el gráfico original compartido por el usuario.
+    Plots per-class precision, recall, and F1 bar charts.
+
+    Parameters
+    precision : array-like
+        Class-wise precision values.
+    recall : array-like
+        Class-wise recall values.
+    f1 : array-like
+        Class-wise F1 scores.
+    num_classes : int
+        Total number of classes.
+
+    Key elements
+    classes : class indices.
+    width : bar spacing.
+    x : bar positions.
+    bar plots : metric bars.
+    grid : y-axis grid.
     """
+
 
     classes = np.arange(num_classes)
     width = 0.25

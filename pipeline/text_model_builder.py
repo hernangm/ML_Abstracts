@@ -1,6 +1,44 @@
 from text_preprocessor.tokenizer import build_vocab, text_to_tensor
 
 def prepare_text_model(df_train, df_test, cfg):
+    """
+     Builds vocabulary
+     tokenizes text
+     selects the appropriate model class,
+     initializes a sequence classifier RNN-LSTM-GRU...
+
+     Parameters
+     df_train : DataFrame
+         Training samples.
+     df_test : DataFrame
+         Test samples.
+     cfg : Config
+         Global configuration.
+
+     Key arguments
+     vocab_size : token count.
+     embed_dim : embedding width.
+     hidden_dim : recurrent units.
+     num_classes : output labels.
+     dropout : regularization rate.
+     num_layers : model depth.
+     pad_idx : padding index.
+     model_type : architecture selector.
+     use_lora : low-rank adaptation.
+
+     Returns
+     model : nn.Module
+         Initialized sequence model.
+     vocab : list
+         Token list.
+     stoi : dict
+         String-to-index map.
+     X_train, y_train : Tensor
+         Encoded training set.
+     X_test, y_test : Tensor
+         Encoded test set.
+     """
+
     print("Construyendo vocabulario y tokenizando...")
     vocab, stoi = build_vocab(df_train[cfg.TEXT_COL], min_freq=cfg.MIN_FREQ)
     X_train, y_train = text_to_tensor(df_train, stoi, cfg.MAX_LEN, label_col="label")

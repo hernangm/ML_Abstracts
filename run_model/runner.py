@@ -10,6 +10,39 @@ from pipeline.bert_lora_eval import evaluate_bert_lora
 
 
 def run_model(cfg):
+    """
+    Orchestrates dataset loading
+    model construction
+    training
+    evaluation
+    for both classic sequence models RNN-LSTM-GRU and BERT+LoRA.
+
+    Parameters
+    cfg : Config
+        Global configuration.
+
+    Key arguments
+    data_path : dataset location.
+    text_col : input text field.
+    label_col : raw label field.
+    num_classes : output size.
+    model_type : architecture selector.
+    X_train / y_train : training tensors.
+    X_test / y_test : evaluation tensors.
+    scheduler : LR scheduler (optional).
+    bert_lora : transformer fine-tuning path.
+
+    Main steps
+    load_dataset : import and split data.
+    prepare_text_model : build vocab + init model.
+    prepare_bert_lora_model : tokenizer + BERT-LoRA setup.
+    train_model : train classical nets.
+    train_bert_lora : fine-tune transformer.
+    evaluate_model : final metrics.
+    evaluate_bert_lora : transformer accuracy.
+
+        Executes the full training/evaluation workflow based  cfg.MODEL_TYPE.
+    """
 
     print("Cargando dataset...")
     df_train, df_test, num_classes = load_dataset(

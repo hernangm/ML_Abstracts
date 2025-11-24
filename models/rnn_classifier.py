@@ -4,6 +4,34 @@ from torch.nn.utils.rnn import pack_padded_sequence
 
 
 class RNNClassifier(nn.Module):
+    """
+    RNN  text classification.
+
+    Parameters
+    vocab_size : int
+        Vocabulary size.
+    embed_dim : int
+        Embedding dimension.
+    hidden_dim : int
+        RNN hidden units.
+    num_classes : int
+        Output classes.
+    dropout : float
+        Drop probability.
+    num_layers : int
+        RNN depth.
+    pad_idx : int or None
+        Padding token index.
+
+    Key components
+    embedding : token vectors.
+    rnn : recurrent layer.
+    fc : classification head.
+    lengths : real sequence lengths.
+    packed : padded-aware sequence.
+    h_n : final hidden state.
+
+    """
     def __init__(self, vocab_size, embed_dim, hidden_dim, num_classes,
                  dropout, num_layers=1, pad_idx=None):
         super().__init__()

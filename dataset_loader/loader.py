@@ -3,6 +3,38 @@ from sklearn.model_selection import train_test_split
 
 
 def load_dataset(path, text_col="Body", label_col="Scores", seed=42, test_size=0.1):
+    """
+    Loads an Excel dataset
+    cleans text rows
+    encodes labels and performs
+    stratified split
+
+    Parameters
+    path : str
+        File path.
+    text_col : str
+        Text column name.
+    label_col : str
+        Label column name.
+    seed : int
+        RNG seed.
+    test_size : float
+        Test split ratio.
+
+    Key steps
+    dropna : remove empty texts.
+    to_numeric : cast labels.
+    cls2id : class mapping.
+    stratify : balanced split.
+
+    Returns
+    train_df : DataFrame
+        Training subset.
+    test_df : DataFrame
+        Test subset.
+    num_classes : int
+        Count of unique labels.
+    """
     df = pd.read_excel(path)
     df = df.dropna(subset=[text_col])
 

@@ -1,9 +1,35 @@
-# pipeline/bert_lora_train.py
-
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
 def train_bert_lora(model, X_ids, X_mask, y, cfg):
+    def train_bert_lora(model, X_ids, X_mask, y, cfg):
+        """
+        Fine-tunes a BERT model augmented with LoRA adapters.
+
+        Parameters
+        model : nn.Module
+            BERT LoRA model.
+        X_ids : Tensor
+            Input token IDs.
+        X_mask : Tensor
+            Attention masks.
+        y : Tensor
+            Class labels.
+        cfg : Config
+            Runtime configuration.
+
+        Key arguments
+        batch_size : training batch size.
+        lr : learning rate.
+        epochs : total iterations.
+        device : compute device.
+        criterion : loss function.
+        optimizer : weight update rule.
+
+        Returns
+        None
+
+        """
 
     dataset = TensorDataset(X_ids, X_mask, y)
     loader = DataLoader(dataset, batch_size=cfg.BATCH_SIZE, shuffle=True)

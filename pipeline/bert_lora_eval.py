@@ -1,9 +1,33 @@
-# pipeline/bert_lora_eval.py
-
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
 def evaluate_bert_lora(model, X_ids, X_mask, y, cfg):
+    """
+       Evaluates BERT model fine-tuned  LoRA adapters.
+
+       Parameters
+       model : nn.Module
+           BERT-LoRA classifier.
+       X_ids : Tensor
+           Input token IDs.
+       X_mask : Tensor
+           Attention masks.
+       y : Tensor
+           Ground-truth labels.
+       cfg : Config
+           Runtime configuration.
+
+       Key arguments
+       batch_size : eval batch size.
+       device : compute device.
+       logits : model scores.
+       preds : predicted labels.
+       accuracy : correct ratio.
+
+       Returns
+       float
+           Classification accuracy over the dataset.
+       """
 
     dataset = TensorDataset(X_ids, X_mask, y)
     loader = DataLoader(dataset, batch_size=cfg.BATCH_SIZE, shuffle=False)

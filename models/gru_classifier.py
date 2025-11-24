@@ -3,6 +3,33 @@ import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence
 
 class GRUClassifier(nn.Module):
+    """
+    GRU  text classification.
+
+    Parameters
+    vocab_size : int
+        Vocabulary size.
+    embed_dim : int
+        Embedding dimension.
+    hidden_dim : int
+        GRU hidden units.
+    num_classes : int
+        Output classes.
+    dropout : float
+        Drop probability.
+    num_layers : int
+        GRU depth.
+    pad_idx : int or None
+        Padding token index.
+
+    Key components
+    embedding : token vectors.
+    gru : recurrent encoder.
+    packed : padded-aware sequence.
+    h_n : final hidden state.
+    fc : classification head.
+
+    """
     def __init__(self, vocab_size, embed_dim, hidden_dim, num_classes,
                  dropout=0.5, num_layers=1, pad_idx=None):
         super().__init__()

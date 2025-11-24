@@ -16,6 +16,43 @@ def train_model(
     X_test=None,
     y_test=None
 ):
+    """
+    Trains a sequence classification model (RNN/LSTM/GRU) with optional LR scheduler
+    and computes metrics per epoch.
+
+    Parameters
+    model : nn.Module
+        Sequence classifier.
+    X_train : Tensor
+        Training inputs.
+    y_train : Tensor
+        Training labels.
+    cfg : Config
+        Global configuration.
+    scheduler : object or None
+        Optional learning-rate scheduler.
+    X_test : Tensor or None
+        Test inputs.
+    y_test : Tensor or None
+        Test labels.
+
+    Key arguments
+    batch_size : training size.
+    lr : learning rate.
+    num_epochs : total epochs.
+    pad_idx : padding ID.
+    lengths : real lengths.
+    logits : model outputs.
+    loss : cross-entropy value.
+    acc : classification accuracy.
+    f1 : macro F1-score.
+
+    Returns
+    history : dict
+        Loss, accuracy, and F1 per epoch.
+    """
+
+
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.LR)
 
@@ -78,7 +115,26 @@ def train_model(
 
 def _evaluate_epoch(model, X_test, y_test, cfg):
     """
-    Devuelve: test_loss, accuracy, f1
+    Computes test loss, accuracy, and F1 for one epoch.
+
+    Parameters
+    model : nn.Module
+        Trained classifier.
+    X_test : Tensor
+        Evaluation inputs.
+    y_test : Tensor
+        Ground-truth labels.
+    cfg : Config
+        Configuration object.
+
+    Key elements
+    lengths : true sequence sizes.
+    preds : predicted classes.
+    avg_loss : mean epoch loss.
+
+    Returns
+    tuple
+        (test_loss, accuracy, f1_score)
     """
     criterion = torch.nn.CrossEntropyLoss()
     model.eval()
@@ -116,11 +172,13 @@ def _evaluate_epoch(model, X_test, y_test, cfg):
 
 def _plot_training_curves(history):
     """
-    Genera gráficos de:
-    - Train Loss
-    - Test Loss
-    - Test Accuracy
-    - Test F1
+    Generates training curves for:
+    - train loss
+    - test loss
+    - test accuracy
+    - test F1
+
+        Displays all plots.
     """
 
     epochs = range(1, len(history["train_loss"]) + 1)

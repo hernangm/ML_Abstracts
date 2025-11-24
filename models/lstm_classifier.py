@@ -4,14 +4,14 @@ import torch.nn as nn
 
 class LSTMClassifier(nn.Module):
     """
-    LSTM para CLASIFICACIÓN de texto.
+    LSTM for text CLASSIFICATION.
 
-    - Interfaz:
+    - Interface:
       * __init__(vocab_size, embed_dim, hidden_dim, num_classes, dropout=0.5, num_layers=1, pad_idx=None)
       * forward(x, lengths) -> logits [batch, num_classes]
 
-    - Usa 'lengths' para ignorar correctamente el padding:
-      * Elige el último timestep REAL de cada secuencia (no el <pad>).
+    - Uses 'lengths' to properly ignore padding:
+      * Selects the last REAL timestep of each sequence (not the <pad> token).
     """
 
     def __init__(
