@@ -22,25 +22,25 @@ class Config:
     SEED = 42
 
     # Longitud máxima
-    MAX_LEN = 128
+    MAX_LEN = 80
 
     # Tamaño del batch
     BATCH_SIZE = 32
 
     # Numero total de épocas
-    EPOCHS = 10
+    EPOCHS = 8
 
     # Dimensión del embedding
-    EMBED_DIM = 128
+    EMBED_DIM = 200
 
     # Tamaño de la capa oculta  RNN/LSTM/GRU
-    HIDDEN_DIM = 64
+    HIDDEN_DIM = 96
 
     # Cantidad de capas
     NUM_LAYERS = 1
 
     # Probabilidad de dropout
-    DROPOUT = 0.5
+    DROPOUT = 0.63
 
     # Learning rate del optimizador Adam
     LR = 1e-3
@@ -49,7 +49,7 @@ class Config:
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Frecuencia mínima
-    MIN_FREQ = 1
+    MIN_FREQ = 5
 
     # Cantidad de clases
     NUM_CLASSES = 5

@@ -1,6 +1,8 @@
 import torch
 from sklearn.metrics import accuracy_score
-
+from sklearn.metrics import precision_recall_fscore_support
+import matplotlib.pyplot as plt
+import numpy as np
 
 """
     Evaluate a sequence classification model on a test dataset.
@@ -37,3 +39,55 @@ def evaluate_model(model, X_test, y_test, cfg):
             y_true.append(y_test[i].item())
     acc = accuracy_score(y_true, y_pred)
     print(f"Accuracy: {acc*100:.2f}%")
+    precision, recall, f1 = compute_detailed_metrics(
+        y_true,
+        y_pred,
+        cfg.NUM_CLASSES
+    )
+    print("\nMétricas por clase:")
+    for c in range(cfg.NUM_CLASSES):
+        print(f"Clase {c}:  Precision={precision[c]:.3f}  Recall={recall[c]:.3f}  F1={f1[c]:.3f}")
+
+    # === Gráfico (NUEVO - no altera nada existente) ===
+    plot_detailed_metrics(precision, recall, f1, cfg.NUM_CLASSES)
+
+def compute_detailed_metrics(y_true, y_pred, num_classes):
+    """
+    Calcula precision, recall y F1 por clase sin alterar el flujo normal.
+    """
+    precision, recall, f1, _ = precision_recall_fscore_support(
+        y_true,
+        y_pred,
+        labels=list(range(num_classes)),
+        zero_division=0
+    )
+    return precision, recall, f1
+
+
+
+def plot_detailed_metrics(precision, recall, f1, num_classes):
+    """
+    Grafica barras por clase para Precision, Recall y F1 (0..1).
+    El estilo replica el gráfico original compartido por el usuario.
+    """
+
+    classes = np.arange(num_classes)
+    width = 0.25
+    x = np.arange(len(classes))
+
+    plt.figure(figsize=(12, 6))
+    plt.title("Métricas de Clasificación Detalladas por Nota")
+
+    plt.bar(x - width, precision, width=width, label="Precision")
+    plt.bar(x, recall, width=width, label="Recall")
+    plt.bar(x + width, f1, width=width, label="F1-Score")
+
+    plt.xlabel("Nota (Clase Real)")
+    plt.ylabel("Puntaje (0-1)")
+    plt.xticks(classes, classes)
+    plt.legend()
+    plt.grid(axis="y", alpha=0.3)
+    plt.tight_layout()
+    plt.show()
+
+
