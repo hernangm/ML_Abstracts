@@ -3,16 +3,6 @@ import torch.nn as nn
 
 
 class LSTMClassifier(nn.Module):
-    """
-    LSTM para CLASIFICACIÓN de texto.
-
-    - Mantiene la misma interfaz que el resto del proyecto:
-      * __init__(vocab_size, embed_dim, hidden_dim, num_classes, dropout=0.5, num_layers=1, pad_idx=None)
-      * forward(x, lengths) -> logits [batch, num_classes]
-
-    - Usa 'lengths' para ignorar correctamente el padding:
-      * Elige el último timestep REAL de cada secuencia (no el <pad>).
-    """
 
     def __init__(
         self,
@@ -26,11 +16,11 @@ class LSTMClassifier(nn.Module):
     ):
         super().__init__()
 
-        # ===== Embedding =====
+        # Embedding
         # padding_idx permite que el token <pad> no aporte información
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=pad_idx)
 
-        # ===== LSTM =====
+        # LSTM
         # batch_first=True → x tiene forma [batch, seq_len, embed_dim]
         self.lstm = nn.LSTM(
             input_size=embed_dim,
@@ -41,20 +31,20 @@ class LSTMClassifier(nn.Module):
             dropout=dropout if num_layers > 1 else 0.0,
         )
 
-        # ===== Capa final de clasificación =====
+        # Capa final de clasificación
         self.fc = nn.Linear(hidden_dim, num_classes)
 
         # Dropout en embeddings y en la salida antes de la FC
         self.dropout = nn.Dropout(dropout)
 
-        # ===== Inicialización razonable =====
+        # Inicialización razonable
         # Embeddings Xavier y padding en cero
         nn.init.xavier_uniform_(self.embedding.weight)
         if pad_idx is not None:
             with torch.no_grad():
                 self.embedding.weight[pad_idx].fill_(0)
 
-        # Inicialización ortogonal de las matrices recurrentes (opcional pero prolijo)
+        # Inicialización ortogonal de las matrices recurrentes
         for name, param in self.lstm.named_parameters():
             if "weight_ih" in name:
                 nn.init.xavier_uniform_(param.data)
@@ -92,7 +82,7 @@ class LSTMClassifier(nn.Module):
         #    lstm_out: [B, T, H]
         #      → last_hidden: [B, H]
 
-        # Aseguramos que no haya longitudes cero (por seguridad)
+        # Aseguramos que no haya longitudes cero
         lengths = lengths.clamp(min=1)
 
         batch_size = x.size(0)
