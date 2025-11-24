@@ -70,7 +70,7 @@ def train_model(
         avg_loss = total_loss / len(loader)
         print(f"Epoch {epoch + 1}: Loss promedio {avg_loss:.4f}")
 
-        # === Scheduler opcional ===
+        # Scheduler opcional
         if scheduler is not None:
             scheduler.step(avg_loss)
             current_lr = optimizer.param_groups[0]["lr"]
