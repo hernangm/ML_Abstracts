@@ -44,21 +44,21 @@ from transformers import BertForSequenceClassification
 """
 
 def prepare_transformer_model(df_train, df_test, cfg):
-    # Paso 1: Cargar el vocabulario de BERT
+    # Cargar el vocabulario de BERT
     print("Loading BERT vocabulary...")
     vocab, stoi = build_vocab()
 
-    # Paso 2: Tokenizar y convertir los textos en tensores
+    # Tokenizar y convertir los textos en tensores
     print("Tokenizing and converting text to tensors...")
     X_train, y_train = text_to_tensor(df_train, stoi, cfg.MAX_LEN, text_col=cfg.TEXT_COL, label_col="label")
     X_test, y_test = text_to_tensor(df_test, stoi, cfg.MAX_LEN, text_col=cfg.TEXT_COL, label_col="label")
 
-    # Paso 3: Inicializar el modelo BERT para clasificación
+    # Inicializar el modelo BERT para clasificación
     print("Initializing BERT model for sequence classification...")
     model = BertForSequenceClassification.from_pretrained(
         "bert-base-uncased",
         num_labels=cfg.NUM_CLASSES
     ).to(cfg.DEVICE)
 
-    # Paso 4: Retornar todos los objetos necesarios para el entrenamiento
+    # Retornar todos los objetos necesarios para el entrenamiento
     return model, vocab, stoi, X_train, y_train, X_test, y_test
