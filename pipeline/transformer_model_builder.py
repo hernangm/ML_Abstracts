@@ -3,54 +3,62 @@ from text_preprocessor.tokenizer_bert import build_vocab, text_to_tensor
 from transformers import BertForSequenceClassification
 
 """
-    Prepare data, tokenizer, and model for a transformer-based classifier.
+    Prepara los datos, el tokenizador y el modelo para un clasificador basado en transformers (BERT).
 
-    This function loads BERT's vocabulary, converts training and test datasets
-    into tensor representations, and initializes a BERT classification model.
+    Esta función realiza los siguientes pasos:
+    1. Carga el vocabulario de BERT usando la función build_vocab, que obtiene la lista de tokens y el diccionario de índices.
+    2. Tokeniza y convierte los textos de los conjuntos de entrenamiento y prueba en tensores de índices, usando la función text_to_tensor.
+    3. Inicializa el modelo BertForSequenceClassification, que es una arquitectura de BERT adaptada para tareas de clasificación de texto.
+       El modelo se carga desde el checkpoint "bert-base-uncased" y se ajusta el número de clases (num_labels) según la configuración.
+    4. Devuelve el modelo, el vocabulario, el diccionario de índices, y los tensores de datos y etiquetas para entrenamiento y prueba.
 
-    Parameters
+    Parámetros
     ----------
     df_train : pandas.DataFrame
-        Training dataset containing the text and label columns.
+        DataFrame de entrenamiento que contiene las columnas de texto y etiqueta.
     df_test : pandas.DataFrame
-        Test dataset containing the text and label columns.
-    cfg : object
-        Configuration object with attributes:
-        - TEXT_COL: name of the text column
-        - MAX_LEN: maximum sequence length
-        - NUM_CLASSES: number of output classes
-        - DEVICE: computation device
+        DataFrame de prueba que contiene las columnas de texto y etiqueta.
+    cfg : objeto de configuración
+        Debe tener los siguientes atributos:
+        - TEXT_COL: nombre de la columna de texto.
+        - MAX_LEN: longitud máxima de las secuencias.
+        - NUM_CLASSES: número de clases de salida.
+        - DEVICE: dispositivo de cómputo (cpu o cuda).
 
-    Returns
+    Retorna
     -------
     model : BertForSequenceClassification
-        Initialized BERT classification model.
+        Modelo BERT inicializado para clasificación de secuencias.
     vocab : list of str
-        BERT vocabulary list.
+        Lista de tokens del vocabulario de BERT.
     stoi : dict
-        Mapping from token string to integer index.
+        Diccionario que mapea cada token a su índice entero.
     X_train : torch.Tensor
-        Tensor of token ID sequences for the training data.
+        Tensor con las secuencias de IDs de tokens para los datos de entrenamiento.
     y_train : torch.Tensor
-        Tensor of training labels.
+        Tensor con las etiquetas de entrenamiento.
     X_test : torch.Tensor
-        Tensor of token ID sequences for the test data.
+        Tensor con las secuencias de IDs de tokens para los datos de prueba.
     y_test : torch.Tensor
-        Tensor of test labels.
+        Tensor con las etiquetas de prueba.
 """
 
 def prepare_transformer_model(df_train, df_test, cfg):
+    # Paso 1: Cargar el vocabulario de BERT
     print("Loading BERT vocabulary...")
     vocab, stoi = build_vocab()
 
+    # Paso 2: Tokenizar y convertir los textos en tensores
     print("Tokenizing and converting text to tensors...")
     X_train, y_train = text_to_tensor(df_train, stoi, cfg.MAX_LEN, text_col=cfg.TEXT_COL, label_col="label")
     X_test, y_test = text_to_tensor(df_test, stoi, cfg.MAX_LEN, text_col=cfg.TEXT_COL, label_col="label")
 
+    # Paso 3: Inicializar el modelo BERT para clasificación
     print("Initializing BERT model for sequence classification...")
     model = BertForSequenceClassification.from_pretrained(
         "bert-base-uncased",
         num_labels=cfg.NUM_CLASSES
     ).to(cfg.DEVICE)
 
+    # Paso 4: Retornar todos los objetos necesarios para el entrenamiento
     return model, vocab, stoi, X_train, y_train, X_test, y_test
