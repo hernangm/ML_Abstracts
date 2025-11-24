@@ -1,5 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 
 
 def load_dataset(path, text_col="Body", label_col="Scores", seed=42, test_size=0.1):

@@ -31,7 +31,11 @@ def evaluate_model(model, X_test, y_test, cfg):
         for i in range(len(y_test)):
             sample = X_test[i].unsqueeze(0).to(cfg.DEVICE)     # [1, T]
             length = (sample != pad).sum(dim=1).to(torch.long) # [1]
-            logits = model(sample, length)
+            if cfg.MODEL_TYPE == "transformer":
+                mask = (sample != pad).to(cfg.DEVICE)
+                logits = model(sample, attention_mask=mask).logits
+            else:
+                logits = model(sample, length)
             pred = torch.argmax(logits, dim=1).item()
             y_pred.append(pred)
             y_true.append(y_test[i].item())

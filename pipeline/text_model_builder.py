@@ -22,6 +22,9 @@ def prepare_text_model(df_train, df_test, cfg):
     elif cfg.MODEL_TYPE == "rnn_phrases":
         from pipeline.text_model_builder_phrases import prepare_rnn_phrases
         return prepare_rnn_phrases(df_train, df_test, cfg)
+    elif cfg.MODEL_TYPE == "transformer":
+        from pipeline.transformer_model_builder import prepare_transformer_model
+        return prepare_transformer_model(df_train, df_test, cfg)
     else:
         raise ValueError(f"Modelo no soportado: {cfg.MODEL_TYPE}")
 

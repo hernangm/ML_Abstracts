@@ -1,0 +1,16 @@
+torch
+transformers
+pandas
+scikit-learn
+gensim
+tqdm
+openpyxl
+
+# Optional (used in some environments or for compatibility)
+regex
+
+# If using LoRA
+lora
+
+# If using CUDA
+# torch==<your-cuda-version>

@@ -19,6 +19,7 @@ def seleccionar_modelo():
         "3": "gru",
         "4": "rnn_scheduler",
         "5": "rnn_phrases",
+        "6": "transformer",
         "0": "salir"
     }
 
@@ -29,6 +30,7 @@ def seleccionar_modelo():
         print("3) gru")
         print("4) rnn_scheduler")
         print("5) rnn_phrases")
+        print("6) transformer")
         print("0) salir\n")
 
         opcion = input("Opción: ").strip()
